@@ -1,0 +1,57 @@
+group 'com.haken'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// UTF-8 should be standard by now. So use it!
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+mainClassName = 'com.haken.Application'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+    }
+}
+
+ext {
+    configPath = "$rootProject.resources"
+    dropwizardVersion = '0.8.2'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(
+            "io.dropwizard:dropwizard-core:$dropwizardVersion",
+            "io.dropwizard:dropwizard-hibernate:$dropwizardVersion",
+            "io.dropwizard:dropwizard-migrations:$dropwizardVersion",
+            "io.dropwizard:dropwizard-auth:$dropwizardVersion"
+    )
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+run {
+    args 'server', './src/main/resources/local_config.yml'
+}
+
+jar {
+    manifest {
+        attributes(
+                "Main-Class": mainClassName,
+                "Implementation-Title": "Gradle",
+                "Implementation-Version": version
+        )
+    }
+}
