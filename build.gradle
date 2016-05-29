@@ -64,3 +64,9 @@ jar {
         )
     }
 }
+
+task zip(type: Zip) {
+    from('src/main/resources').include('*.yml').into('artifact')
+    from('build/libs').include('*.jar').into('artifct')
+    destinationDir file('dist')
+}
