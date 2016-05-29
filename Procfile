@@ -1,0 +1,1 @@
+web: java -jar dropwizard.jar server ./config.yml
